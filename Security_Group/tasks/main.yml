@@ -1,0 +1,60 @@
+---
+# tasks file for Security_Group
+# roles/security_group/tasks/main.yml
+
+- name: Gather security group facts
+  set_fact:
+    region: "{{ region }}"
+  register: sg_facts
+
+- name: Debug SG facts
+  debug:
+    var: sg_facts
+
+- name: Create Frontend Security Group
+  amazon.aws.ec2_security_group:
+    name: "{{ frontend_sg_name }}"
+    description: "Frontend security group"
+    vpc_id: "{{ vpc_id }}"
+    region: "{{ region }}"
+    rules: "{{ frontend_sg_rules }}"
+    rules_egress: "{{ frontend_sg_egress }}"
+    resource_tags:
+      Name: "{{ frontend_sg_tag }}"
+  register: Frontend_sg
+  
+- name: Set Frontend Security Group ID as fact
+  set_fact:
+    frontend_sg_id: "{{ Frontend_sg.group_id }}"
+
+- name: Create Backend Security Group
+  amazon.aws.ec2_security_group:
+    name: "{{ backend_sg_name }}"
+    description: "Backend security group"
+    vpc_id: "{{ vpc_id }}"
+    region: "{{ region }}"
+    rules: "{{ backend_sg_rules }}"
+    rules_egress: "{{ backend_sg_egress }}"
+    resource_tags:
+      Name: "{{ backend_sg_tag }}"
+  register: Backend_sg
+
+- name: Set Backend Security Group ID as fact
+  set_fact:
+    backend_sg_id: "{{ Backend_sg.group_id }}"
+
+- name: Create RDS Security Group
+  amazon.aws.ec2_security_group:
+    name: "{{ rds_sg_name }}"
+    description: "RDS security group"
+    vpc_id: "{{ vpc_id }}"
+    region: "{{ region }}"
+    rules: "{{ rds_sg_rules }}"
+    rules_egress: "{{ rds_sg_egress }}"
+    resource_tags:
+      Name: "{{ rds_sg_tag }}"
+  register: RDS_sg
+
+- name: Set RDS Security Group ID as fact
+  set_fact:
+    rds_sg_id: "{{ RDS_sg.group_id }}"

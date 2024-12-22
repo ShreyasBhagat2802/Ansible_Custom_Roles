@@ -1,0 +1,58 @@
+---
+# tasks file for rds_setup
+- name: Create RDS Subnet Group
+  amazon.aws.rds_subnet_group:
+    state: present
+    name: "{{ db_subnet_group_name }}"
+    description: "Subnet group for RDS instance"
+    subnets:
+      - "{{ private_subnet_1 }}"
+      - "{{ private_subnet_2 }}"
+    resource_tags:
+      Name: RDS-Sub-Grp
+  register: rds_subnet_group
+
+- name: Create RDS Instance
+  amazon.aws.rds_instance:
+    state: present
+    db_instance_identifier: "{{ rds_instance_identifier }}"
+    allocated_storage: 20
+    db_instance_class: "{{ db_instance_class }}"
+    engine: mysql
+    engine_version: 8.0
+    db_name: "{{ rds_db_name }}"
+    master_username: "{{ rds_username }}"
+    master_user_password: "{{ rds_password }}"
+    db_subnet_group_name: "{{ rds_subnet_group.subnet_group.db_subnet_group_name }}"
+    vpc_security_group_ids:
+      - "{{ rds_sg_id }}"
+    backup_retention_period: 7
+    multi_az: false
+    publicly_accessible: false
+    final_db_snapshot_identifier: "final-snapshot-myrdsdb"
+    resource_tags:
+      Name: rds-db
+  register: rds_instance
+
+- name: Debug RDS Instance Output
+  debug:
+    var: rds_instance
+
+- name: Display RDS Security Group ID and Endpoint
+  debug:
+    msg:
+      - "RDS Instance Endpoint: {{ rds_instance.endpoint }}"
+
+- name: Set the DB credentials from RDS instance output
+  set_fact:
+    db_name: "{{ rds_instance.db_name }}"
+    db_user: "{{ rds_instance.master_username }}"
+    db_password: "{{ rds_password }}"
+    db_host: "{{ rds_instance.endpoint.address }}"
+    db_port: "{{ rds_instance.endpoint.port }}"
+
+- name: Generate a file with DB credentials in export format
+  template:
+    src: db_credentials.j2
+    dest: /home/ubuntu/Ansible/db_credentials.txt
+    mode: '0644'

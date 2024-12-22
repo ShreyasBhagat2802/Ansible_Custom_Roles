@@ -1,0 +1,7 @@
+# vars/main.yml
+db_subnet_group_name: "rds-role-subnet-group"
+rds_instance_identifier: "rds-role-instance"
+rds_db_name: "myrdsdb"
+rds_username: "admin"
+rds_password: "Shreyas28"
+db_instance_class: "db.t3.medium"

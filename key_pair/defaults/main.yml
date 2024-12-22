@@ -1,0 +1,8 @@
+---
+# defaults file for key_pair
+key_name: "roleaccess_key"
+aws_region: "ap-south-1"
+key_file_path: "/home/ubuntu/roleaccess_key.pem"
+key_file_owner: "ubuntu"
+key_file_group: "ubuntu"
+key_file_permissions: '0400'

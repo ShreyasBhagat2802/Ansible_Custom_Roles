@@ -1,0 +1,9 @@
+---
+# vars file for backend
+# backend_instance_name: "backend-instance"
+# backend_instance_type: "t2.micro"
+# backend_ami: "ami-xxxxxxxx"
+# access_key: "your-ssh-key-name"
+# region: "eu-west-1"
+# private_subnet_id: "subnet-xxxxxx"
+# backend_sg_group_id: "sg-xxxxxx"

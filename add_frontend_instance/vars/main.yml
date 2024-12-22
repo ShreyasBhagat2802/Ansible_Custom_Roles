@@ -1,0 +1,3 @@
+---
+# vars file for add_frontend_instance
+frontend_instance_name: "frontend_instance"

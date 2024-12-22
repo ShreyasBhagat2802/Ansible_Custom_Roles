@@ -1,0 +1,21 @@
+---
+# tasks file for backend
+- name: Launch private instance for backend
+  amazon.aws.ec2_instance:
+    state: present
+    name: "{{ backend_instance_name }}"
+    instance_type: "{{ backend_instance_type }}"
+    image_id: "{{ backend_ami }}"
+    key_name: "{{ ec2_key_pair_name }}"
+    region: "{{ region }}"
+    subnet_id: "{{ private_subnet_1 }}"
+    security_groups:
+      - "{{ backend_sg_id }}"
+    wait: true
+    resource_tags:
+      Name: "{{ backend_instance_name }}"
+  register: backend_instance
+
+- name: Set facts for backend instance
+  set_fact:
+    backend_private_ip: "{{ backend_instance.instances[0].private_ip_address }}"

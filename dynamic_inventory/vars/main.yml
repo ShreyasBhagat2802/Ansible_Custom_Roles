@@ -1,0 +1,3 @@
+---
+# vars file for dynamic_inventory
+key_file_path: "/home/ubuntu/role_access_key.pem"

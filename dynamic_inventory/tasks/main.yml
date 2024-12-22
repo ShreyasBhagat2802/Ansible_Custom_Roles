@@ -1,0 +1,9 @@
+---
+# tasks file for dynamic_inventory
+- name: Create inventory file from template
+  template:
+    src: inventory.j2
+    dest: "{{ inventry_path }}"
+    owner: ubuntu
+    group: ubuntu
+    mode: '0644'

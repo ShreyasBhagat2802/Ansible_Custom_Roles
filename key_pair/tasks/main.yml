@@ -1,0 +1,34 @@
+---
+# tasks file for key_pair
+# roles/key_pair/tasks/main.yml
+
+- name: Generate AWS EC2 key pair and save to the control node
+  ec2_key:
+    name: "{{ ec2_key_pair_name }}"
+    region: "{{ region }}"
+    file_name: "{{ key_file_path }}"
+    state: present
+  register: ec2_key_pair
+
+- name: Set fact for the EC2 key pair name
+  set_fact:
+    ec2_key_pair_name: "{{ ec2_key_pair.key.name }}"
+
+- name: Set fact for EC2 key pair details
+  set_fact:
+    ec2_key_pair_name: "{{ ec2_key_pair.key.name }}"
+    key_file_path: "{{ key_file_path }}"
+    key_file_owner: "{{ key_file_owner }}"
+    key_file_group: "{{ key_file_group }}"
+    key_file_permissions: "{{ key_file_permissions }}"
+
+- name: Ensure correct permissions for the key on the control node
+  ansible.builtin.file:
+    path: "{{ key_file_path }}"
+    owner: "{{ key_file_owner }}"
+    group: "{{ key_file_group }}"
+    mode: "{{ key_file_permissions }}"
+
+- name: Debug the key pair name
+  debug:
+    msg: "The EC2 key pair name is {{ ec2_key_pair_name }}"

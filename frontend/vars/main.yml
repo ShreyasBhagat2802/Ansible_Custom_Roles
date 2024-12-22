@@ -1,0 +1,9 @@
+---
+# vars file for frontend
+# frontend_instance_name: "frontend-instance"
+# frontend_instance_type: "t2.micro"
+# frontend_ami: "ami-xxxxxxxxxxxxxxx"
+# access_key: "your-access-key-name"
+# region: "eu-west-1"
+# public_subnet_1_id: "subnet-xxxxxx"  # Default subnet ID if not passed from playbook
+# frontend_sg_group_id: "sg-xxxxxx"   # Default security group ID if not passed from playbook

@@ -1,0 +1,22 @@
+---
+# tasks file for frontend
+- name: Launch public instance for frontend
+  amazon.aws.ec2_instance:
+    state: present
+    name: "{{ frontend_instance_name }}"
+    instance_type: "{{ frontend_instance_type }}"
+    image_id: "{{ frontend_ami }}"
+    key_name: "{{ ec2_key_pair_name }}"
+    region: "{{ region }}"
+    subnet_id: "{{ public_subnet_1 }}"  # Referencing the variable passed for subnet ID
+    security_groups:
+      - "{{ frontend_sg_id }}"  # Using variable for security group ID
+    wait: true
+    resource_tags:
+      Name: "{{ frontend_instance_name }}"
+  register: frontend_instance
+
+- name: Set facts for frontend instance
+  set_fact:
+    frontend_ip: "{{ frontend_instance.instances[0].public_ip_address }}"
+    frontend_private_ip: "{{ frontend_instance.instances[0].private_ip_address }}"

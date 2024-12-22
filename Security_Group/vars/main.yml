@@ -1,0 +1,56 @@
+---
+# vars file for Security_Group
+# roles/security_group/vars/main.yml
+
+frontend_sg_name: "Frontend-sg"
+frontend_sg_rules:
+  - proto: tcp
+    from_port: 22
+    to_port: 22
+    cidr_ip: 0.0.0.0/0
+  - proto: tcp
+    from_port: 80
+    to_port: 80
+    cidr_ip: 0.0.0.0/0
+  - proto: tcp
+    from_port: 8000
+    to_port: 8000
+    cidr_ip: 0.0.0.0/0
+frontend_sg_egress:
+  - proto: -1
+    cidr_ip: 0.0.0.0/0
+frontend_sg_tag: "Frontend-SG"
+
+backend_sg_name: "Backend-sg"
+backend_sg_rules:
+  - proto: tcp
+    from_port: 22
+    to_port: 22
+    cidr_ip: 0.0.0.0/0
+  - proto: tcp
+    from_port: 80
+    to_port: 80
+    cidr_ip: 0.0.0.0/0
+  - proto: tcp
+    from_port: 3306
+    to_port: 3306
+    cidr_ip: 0.0.0.0/0
+  - proto: tcp
+    from_port: 8000
+    to_port: 8000
+    cidr_ip: 0.0.0.0/0
+backend_sg_egress:
+  - proto: -1
+    cidr_ip: 0.0.0.0/0
+backend_sg_tag: "Backend-SG"
+
+rds_sg_name: "RDS-sg"
+rds_sg_rules:
+  - proto: tcp
+    from_port: 3306
+    to_port: 3306
+    cidr_ip: 0.0.0.0/0
+rds_sg_egress:
+  - proto: -1
+    cidr_ip: 0.0.0.0/0
+rds_sg_tag: "RDS-SG"

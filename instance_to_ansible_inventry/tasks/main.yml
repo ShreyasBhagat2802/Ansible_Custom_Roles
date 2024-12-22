@@ -1,0 +1,9 @@
+---
+# tasks file for instance_to_ansible_inventry
+- name: Add the server to Ansible inventory
+  ansible.builtin.add_host:
+    name: "{{ server_name }}"
+    ansible_host: "{{ server_ip }}"
+    ansible_user: ubnutu
+    ansible_ssh_private_key_file: "{{ key_file_path }}"
+    groups: frontend

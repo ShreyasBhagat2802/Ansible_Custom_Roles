@@ -1,0 +1,5 @@
+[frontend]
+{{ frontend_ip }} ansible_user=ubuntu ansible_ssh_private_key_file={{ key_file_path }}
+
+[backend]
+{{ backend_private_ip }} ansible_user=ubuntu ansible_ssh_private_key_file={{ key_file_path }} ansible_ssh_common_args='-o ProxyCommand="ssh -W %h:%p -i {{ key_file_path }} ubuntu@{{ frontend_ip }}"'
